@@ -11,9 +11,9 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/jpillora/chisel/share/cio"
+	"github.com/jpillora/chisel/share/settings"
 	"github.com/jpillora/sizestr"
-	"github.com/wolfthefallen/chisel/share/cio"
-	"github.com/wolfthefallen/chisel/share/settings"
 	"golang.org/x/crypto/ssh"
 	"golang.org/x/sync/errgroup"
 )

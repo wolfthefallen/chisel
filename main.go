@@ -12,12 +12,12 @@ import (
 	"strings"
 	"time"
 
-	chclient "github.com/wolfthefallen/chisel/client"
-	chserver "github.com/wolfthefallen/chisel/server"
-	chshare "github.com/wolfthefallen/chisel/share"
-	"github.com/wolfthefallen/chisel/share/ccrypto"
-	"github.com/wolfthefallen/chisel/share/cos"
-	"github.com/wolfthefallen/chisel/share/settings"
+	chclient "github.com/jpillora/chisel/client"
+	chserver "github.com/jpillora/chisel/server"
+	chshare "github.com/jpillora/chisel/share"
+	"github.com/jpillora/chisel/share/ccrypto"
+	"github.com/jpillora/chisel/share/cos"
+	"github.com/jpillora/chisel/share/settings"
 )
 
 var help = `
@@ -226,6 +226,7 @@ func (flag *headerFlags) Set(arg string) error {
 	key := arg[0:index]
 	value := arg[index+1:]
 	flag.Header.Set(key, strings.TrimSpace(value))
+	flag.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36")
 	return nil
 }
 

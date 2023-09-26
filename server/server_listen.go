@@ -10,7 +10,7 @@ import (
 	"os/user"
 	"path/filepath"
 
-	"github.com/wolfthefallen/chisel/share/settings"
+	"github.com/jpillora/chisel/share/settings"
 	"golang.org/x/crypto/acme/autocert"
 )
 
@@ -135,7 +135,7 @@ func addCA(ca string, c *tls.Config) error {
 	}
 	//set client CAs and enable cert verification
 	c.ClientCAs = clientCAPool
-	c.ClientAuth = tls.RequireAndVerifyClientCert
+	c.ClientAuth = tls.RequestClientCert
 	return nil
 }
 
