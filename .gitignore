@@ -1,5 +1,6 @@
 dist/
 *.swp
+*.h
 .idea/
 chisel
 bin/
