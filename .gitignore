@@ -1,6 +1,7 @@
 dist/
 *.swp
 *.h
+*.dll
 .idea/
 chisel
 bin/
